@@ -32,13 +32,15 @@
     # retroarch        # Multi-system emulator (includes N64 cores)
   ];
 
-  # Enable OpenGL hardware acceleration
+  # Enable graphics hardware acceleration
   # Required for proper graphics rendering and performance
   # The 32-bit support ensures maximum game compatibility
-  hardware.opengl = {
+  #
+  # Note: In NixOS 24.11+, hardware.opengl was renamed to hardware.graphics
+  # and driSupport options are now enabled by default
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;  # Important for some N64 plugins
+    enable32Bit = true;  # Important for some N64 plugins
   };
 
   # Optional: USB controller support
