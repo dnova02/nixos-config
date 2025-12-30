@@ -1,0 +1,36 @@
+# NixOS Config .gitignore
+
+# Hardware-specific configuration (contains UUIDs, partitions, etc.)
+hardware-configuration.nix
+
+# Secrets and sensitive files
+*.secret
+*.key
+*.pem
+secrets/
+.env
+.env.*
+
+# Personal/private configurations
+private/
+local/
+
+# Result symlinks from nix builds
+result
+result-*
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Logs
+*.log
