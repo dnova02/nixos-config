@@ -26,6 +26,8 @@
   #   - Active development and bug fixes
   environment.systemPackages = with pkgs; [
     simple64
+    xorg.xcbutil
+    xorg.xcbutilcursor  # Required for Qt xcb platform plugin
 
     # Optional: Uncomment to add alternative emulators
     # mupen64plus      # Classic N64 emulator
