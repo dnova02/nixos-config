@@ -33,7 +33,7 @@ sudo nixos-rebuild switch
 
 4. Launch simple64 from your application menu or terminal:
 ```bash
-simple64
+simple64-gui
 ```
 
 ### Option 2: Copy-Paste

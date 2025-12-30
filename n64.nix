@@ -11,7 +11,7 @@
 #   1. Copy this file to /etc/nixos/n64.nix
 #   2. Add './n64.nix' to your configuration.nix imports
 #   3. Run: sudo nixos-rebuild switch
-#   4. Launch simple64 from your app menu or run 'simple64' in terminal
+#   4. Launch simple64 from your app menu or run 'simple64-gui' in terminal
 #
 # Requirements:
 #   - GPU with OpenGL support
