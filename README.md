@@ -5,7 +5,9 @@ A plug-and-play NixOS module for Nintendo 64 emulation using simple64.
 ## Features
 
 - 🎮 Simple64 emulator (modern, user-friendly N64 emulator)
+- 🔊 Fixed audio configuration (no distortion or crackling)
 - 🖥️ OpenGL acceleration enabled
+- 🎯 USB controller support configured automatically
 - 🔧 32-bit graphics support for compatibility
 - 📦 Single file, drop-in module
 
@@ -41,36 +43,63 @@ simple64-gui
 1. Create `/etc/nixos/n64.nix` with the contents from this repo
 2. Follow steps 2-4 above
 
+### Option 3: Use as a Flake (Recommended for Git Workflows)
+
+1. Add this module to your NixOS configuration's `flake.nix`:
+```nix
+{
+  description = "NixOS configuration with N64 emulation";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Or use a specific branch: nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+
+    n64-emulation = {
+      url = "github:dnova02/nixos-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs = { self, nixpkgs, n64-emulation, ... }: {
+    nixosConfigurations.YOUR-HOSTNAME = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./configuration.nix
+        n64-emulation.nixosModules.n64
+      ];
+    };
+  };
+}
+```
+
+2. Enable flakes in your `configuration.nix` if not already enabled:
+```nix
+nix.settings.experimental-features = [ "nix-command" "flakes" ];
+```
+
+3. Rebuild your system:
+```bash
+sudo nixos-rebuild switch --flake .#YOUR-HOSTNAME
+```
+
 ## What's Included
 
 - **simple64**: A modern fork of Mupen64Plus with better UI and defaults
+- **Audio fix**: Wrapper script that prevents audio distortion/crackling
 - **OpenGL support**: Hardware-accelerated graphics rendering
+- **USB controller support**: Automatic udev rules for game controllers
 - **32-bit compatibility**: Ensures maximum game compatibility
 
 ## Customization
 
-The module is minimal by design. If you want to customize:
+This module focuses exclusively on simple64 for the best N64 experience. Controller support and audio fixes are already configured automatically.
 
-### Add Controllers Support
-
-Add to your `configuration.nix`:
-```nix
-# USB controller permissions
-services.udev.extraRules = ''
-  SUBSYSTEM=="usb", ATTRS{idVendor}=="057e", MODE="0666"
-'';
+If you need to customize the audio driver, you can set the `SDL_AUDIODRIVER` environment variable before launching:
+```bash
+SDL_AUDIODRIVER=alsa simple64-gui
 ```
 
-### Install Additional Emulators
-
-Modify `n64.nix` to add more emulators:
-```nix
-environment.systemPackages = with pkgs; [
-  simple64
-  mupen64plus  # (Optional) Alternative N64 emulator
-  retroarch    # (Optional) Multi-system emulator
-];
-```
+Available audio drivers: `pulseaudio`, `alsa`, `pipewire`
 
 ## Troubleshooting
 
@@ -87,11 +116,8 @@ For AMD:
 services.xserver.videoDrivers = [ "amdgpu" ];
 ```
 
-### Permission Issues
-If controllers aren't detected, add your user to the input group:
-```nix
-users.users.YOUR-USERNAME.extraGroups = [ "input" ];
-```
+### Audio Issues
+If you experience audio problems, the module automatically sets `SDL_AUDIODRIVER=pulseaudio` which works with both PulseAudio and PipeWire. If issues persist, try manually setting a different driver (see Customization section above).
 
 ## Requirements
 
