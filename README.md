@@ -17,7 +17,7 @@ A plug-and-play NixOS module for Nintendo 64 emulation using simple64.
 
 1. Download `n64.nix` to your NixOS configuration directory:
 ```bash
-sudo curl -o /etc/nixos/n64.nix https://raw.githubusercontent.com/dnova02/nixos-config/refs/heads/main/n64.nix
+sudo curl -o /etc/nixos/n64.nix https://raw.githubusercontent.com/dnova02/nixos-n64/refs/heads/main/n64.nix
 ```
 
 2. Add it to your `configuration.nix` imports:
@@ -55,7 +55,7 @@ simple64-gui
     # Or use a specific branch: nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
 
     n64-emulation = {
-      url = "github:dnova02/nixos-config";
+      url = "github:dnova02/nixos-n64";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
